@@ -101,8 +101,6 @@ const AppointmentsGrid = ({ appointmentsData, fetchAppointments }) => {
           "Saturday",
           "Sunday",
         ].map((day) => {
-          console.log(appointmentsData);
-
           if (
             appointment &&
             appointment.weekDay ===
@@ -128,7 +126,7 @@ const AppointmentsGrid = ({ appointmentsData, fetchAppointments }) => {
                 style={{
                   cursor: "pointer",
                   width: "150px",
-                  height: height,
+                  height: height ?? "10px",
                   backgroundColor: "#rgba(88, 195, 255, 0.93)",
                   border: "1px solid #58C3FFED",
                   background:

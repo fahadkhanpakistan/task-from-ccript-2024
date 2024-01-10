@@ -4,28 +4,35 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useAuthContext } from "./utility-hooks/useAuthContext";
+import axios from "axios";
 
 // pages & components
 import Appointments from "./pages/Appointments";
 import Login from "./pages/Login";
 import Navbar from "./components/Navbar";
-
-import axios from "axios";
-import { useLogout } from "./utility-hooks/useLogout";
+import { useEffect } from "react";
+import { getNewToken } from "./config/axios";
+import { useAuthContext } from "./utility-hooks/useAuthContext";
+axios.defaults.baseURL = "https://hiring-test-task.vercel.app/api/";
 
 function App() {
   const { user } = useAuthContext();
-  const { logout } = useLogout();
 
-  axios.defaults.baseURL = "https://hiring-test-task.vercel.app/api/";
+  useEffect(async () => {
+    let resp = getNewToken(user?.token);
 
-  let refresh = false;
-  // const user = JSON.parse(localStorage.getItem("user"));
+    console.log("Resp", resp());
+  }, []);
 
   axios.interceptors.request.use(
     async function (config) {
+      // token = user?.token;
       // Do something before request is sent
+      // if (
+      //   config.url === "https://hiring-test-task.vercel.app/api/refresh-token"
+      // ) {
+      //   return config;
+      // }
 
       if (user) {
         config.headers.Authorization = `Bearer ${user?.token}`;
@@ -44,35 +51,34 @@ function App() {
   axios.interceptors.response.use(
     (resp) => resp,
     async (error) => {
-      console.log("check", error);
+      // if (error?.response?.status === 401) {
+      //   // alert("Refresh token has issue, giving 400, so logging out");
+      //   // setTimeout(() => {
+      //   //   logout();
+      //   // }, [2000]);
 
-      if (error.response.status === 401 && !refresh) {
-        alert("Refresh token has issue, giving 400, so logging out");
-        setTimeout(() => {
-          logout();
-        }, [2000]);
+      //   const response = await axios.post(
+      //     "https://hiring-test-task.vercel.app/api/refresh-token",
+      //     {
+      //       Authorization:
+      //         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0cmltbWVkVXNlcm5hbWUiOiJzdHJpbmciLCJpYXQiOjE3MDQ4OTE3NDAsImV4cCI6MTcwNDg5MjM0MH0.cQHKh_mmOy6H_w7EMNyEK1_QkARfyMOrChCu8vFnzEs",
+      //     }
+      //     // {
+      //     //   headers: { Authorization: `Bearer ${user.token}` },
+      //     //   withCredentials: true,
+      //     // }
+      //   );
+      //   console.log("JSON-refresh", response);
 
-        refresh = true;
-        console.log(user.token);
-        const response = await axios.post(
-          "/refresh-token",
-          {},
-          {
-            // headers: { Authorization: `Bearer ${user.token}` },
-            withCredentials: true,
-          }
-        );
-        console.log("JSON", response);
+      //   if (response.status === 200) {
+      //     axios.defaults.headers.common[
+      //       "Authorization"
+      //     ] = `Bearer ${response.data["token"]}`;
 
-        if (response.status === 200) {
-          axios.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${response.data["token"]}`;
-
-          return axios(error.config);
-        }
-      }
-      refresh = false;
+      //     return axios(error.config);
+      //   }
+      // }
+      // refresh = false;
       return error;
     }
   );
