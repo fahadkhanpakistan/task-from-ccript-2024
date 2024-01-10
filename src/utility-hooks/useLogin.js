@@ -28,15 +28,6 @@ export const useLogin = () => {
       //update loading state
       setIsLoading(false);
     }
-
-    // const appointmentsResponse = await fetch(
-    //   "https://hiring-test-task.vercel.app/api/appointments",
-    //   {
-    //     headers: { Authorization: `Bearer ${user.token}` },
-    //   }
-    // );
-    // const appointmentsJson = await appointmentsResponse.json();
-    // console.log(appointmentsJson);
   };
 
   return { login, isLoading, error };

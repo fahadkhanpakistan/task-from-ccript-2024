@@ -29,12 +29,10 @@ const Appointments = () => {
     : [];
 
   return (
-    // <section className="appointments" style={{ border: "2px solid red" }}>
     <AppointmentsGrid
       appointmentsData={appointmentsArray}
       fetchAppointments={fetchAppointments}
     />
-    // </section>
   );
 };
 

@@ -81,15 +81,7 @@ const AppointmentsGrid = ({ appointmentsData, fetchAppointments }) => {
           <div className="column-item">12 PM</div>
           <div className="column-item">1 PM</div>
           <div className="column-item">2 PM</div>
-          {/* <div className="column-item">3 PM</div>
-          <div className="column-item">4 PM</div>
-          <div className="column-item">5 PM</div>
-          <div className="column-item">6 PM</div>
-          <div className="column-item">7 PM</div>
-          <div className="column-item">8 PM</div>
-          <div className="column-item">9 PM</div>
-          <div className="column-item">10 PM</div>
-          <div className="column-item">11 PM</div> */}
+        
         </div>
 
         {[
